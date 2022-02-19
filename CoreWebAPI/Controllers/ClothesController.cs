@@ -27,7 +27,15 @@ namespace CoreWebAPI.Controllers
         {
             if(cloth != null)
             {
-                var createdGuid = _clothService.AddCloth(cloth);
+                Guid createdGuid;
+                try 
+                {
+                    createdGuid = _clothService.AddCloth(cloth);
+                }
+                catch (ArgumentException ex)
+                {
+                    return BadRequest(ex.Message);
+                }
 
                 return Created(createdGuid.ToString(), cloth);
             }

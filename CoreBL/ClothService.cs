@@ -21,6 +21,11 @@ namespace CoreBL
 
         public Guid AddCloth(Cloth cloth)
         {
+            if(! char.IsUpper(cloth.FriendlyName[0]))
+            {
+                throw new ArgumentException("Name sould start with upper - case!");
+            }
+
             var dbcloth = _mapper.Map<ClothDto>(cloth);
 
             return _clothRepository.Add(dbcloth);
