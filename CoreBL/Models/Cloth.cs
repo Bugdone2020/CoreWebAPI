@@ -10,7 +10,7 @@ namespace CoreWebAPI.Models
         public Guid Id { get; set; }
 
         [System.ComponentModel.DataAnnotations.Required]
-        public Materials Material { get; set; }
+        public Materials Material { get; set; } // string
 
         [System.ComponentModel.DataAnnotations.Required]
         [System.ComponentModel.DataAnnotations.MinLength(2)]
