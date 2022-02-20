@@ -1,4 +1,5 @@
-﻿using CoreWebAPI.Models;
+﻿using CoreBL;
+using CoreWebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,73 +13,69 @@ namespace CoreWebAPI.Controllers
     [Route("[controller]")]
     public class ClothesController : ControllerBase
     {
-        private static List<Cloth> _clothes;
+        private readonly ClothService _clothService;
         private readonly ILogger<ClothesController> _logger;
 
-        static ClothesController()
-        {
-            _clothes = new List<Cloth>();
-        }
-
-        public ClothesController(ILogger<ClothesController> logger)
+        public ClothesController(ILogger<ClothesController> logger, ClothService clothService)
         {
             _logger = logger;
+            _clothService = clothService;
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         public IActionResult AddClothes(Cloth cloth)
         {
-            cloth.Id = Guid.NewGuid();
-            _clothes.Add(cloth);
+            if(cloth != null)
+            {
+                Guid createdGuid;
+                try 
+                {
+                    createdGuid = _clothService.AddCloth(cloth);
+                }
+                catch (ArgumentException ex)
+                {
+                    return BadRequest(ex.Message);
+                }
 
-            return Created(cloth.Id.ToString(), cloth);
+                return Created(createdGuid.ToString(), cloth);
+            }
+
+            return BadRequest();
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         public IActionResult GetAllClothes()
         {
-            return Ok(_clothes);
+            return Ok(_clothService.GetAllClothes());
         }
 
         [HttpGet("{id}")]
         public IActionResult GetClothesById(Guid id)
         {
-            Cloth cloth = _clothes.FirstOrDefault(x => x.Id == id);
+            var cloth = _clothService.GetClothById(id);
             if (cloth != null)
             {
                 return Ok(cloth);
             }
+
             return NotFound();
         }
 
         [HttpPut]
         public IActionResult UpdateCloth(Cloth cloth)
         {
-            var dbCloth = _clothes.FirstOrDefault(x => x.Id == cloth.Id);
-            if (dbCloth != null)
-            {
-                var index = _clothes.IndexOf(dbCloth);
-                _clothes[index] = cloth;
+            var successed = _clothService.UpdateCloth(cloth);
 
-                return Ok(cloth); ;
-            }
-            return NotFound();
+            return StatusCode(successed ? 200 : 404);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteCloth(Guid id)
+        public IActionResult RemoveCloth(Guid id)
         {
-            var dbCloth = _clothes.FirstOrDefault(x => x.Id == id);
+            var cloth = _clothService.RemoveCloth(id);
 
-            if(dbCloth != null)
-            {
-                _clothes.Remove(dbCloth);
-                return Ok(dbCloth);
-            }
-
-            return NotFound();
+            return StatusCode(cloth != null ? 200 : 400, cloth);
         }
-
 
     }
 }
