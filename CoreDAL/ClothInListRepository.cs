@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace CoreDAL
 {
-    public class ClothRepository
+    public class ClothInListRepository : IClothRepository
     {
         private static List<ClothDto> _clothes;
 
-        static ClothRepository()
+        static ClothInListRepository()
         {
             _clothes = new List<ClothDto>();
         }
@@ -36,6 +36,7 @@ namespace CoreDAL
         {
             var entity = GetByID(id);
             _clothes.Remove(entity);
+
             return entity;
         }
 

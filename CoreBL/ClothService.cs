@@ -9,10 +9,10 @@ namespace CoreBL
 {
     public class ClothService
     {
-        private ClothRepository _clothRepository;
+        private IClothRepository _clothRepository;
         private IMapper _mapper;
 
-        public ClothService(IMapper mapper, ClothRepository clothRepository)
+        public ClothService(IMapper mapper, IClothRepository clothRepository)
         {
             _mapper = mapper;
 

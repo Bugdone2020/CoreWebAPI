@@ -22,7 +22,7 @@ namespace CoreWebAPI.Controllers
             _clothService = clothService;
         }
 
-        [HttpPost("add")] //[HttpPost]
+        [HttpPost("add")]
         public IActionResult AddClothes(Cloth cloth)
         {
             if(cloth != null)
@@ -43,7 +43,7 @@ namespace CoreWebAPI.Controllers
             return BadRequest();
         }
 
-        [HttpGet("all")]//[HttpGet]
+        [HttpGet("all")]
         public IActionResult GetAllClothes()
         {
             return Ok(_clothService.GetAllClothes());
