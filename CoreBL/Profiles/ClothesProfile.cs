@@ -13,7 +13,6 @@ namespace CoreBL.Profiles
     {
         public ClothesProfile()
         {
-            //CreateMap<Cloth, ClothDto>(); full complete field match
             CreateMap<Cloth, ClothDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Material, opt => opt.MapFrom(src => src.Material))
