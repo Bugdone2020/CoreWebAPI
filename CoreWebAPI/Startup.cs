@@ -31,7 +31,7 @@ namespace CoreWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<ClothService>();
-            services.AddScoped<IClothRepository, ClothInDBRepository>(); //services.AddScoped<IClothRepository, ClothInListRepository>();
+            services.AddScoped<IClothRepository, ClothInDBRepository>(); // services.AddScoped<IClothRepository, ClothInListRepository>();
 
             services.AddDbContext<EfCoreContext>(options
                 => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
